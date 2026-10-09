@@ -8,6 +8,9 @@ const files=fs.readdirSync(dist).filter(f=>f.endsWith('.html'));
 let localReferences=0;
 for(const file of files){
  const html=fs.readFileSync(path.join(dist,file),'utf8');
+ for(const image of ['cpt.jpg','cft.jpg','nutrition.jpg']){
+  assert(!html.includes(`assets/${image}`),`${file}: removed lecturer photo must not be republished`);
+ }
  assert.equal((html.match(/<h1[ >]/g)||[]).length,1,`${file}: exactly one H1`);
  assert.match(html,/<html lang="ar" dir="rtl">/);
  assert.match(html,/<meta name="description" content="[^\"]+">/);
