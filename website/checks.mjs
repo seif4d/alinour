@@ -11,6 +11,13 @@ for(const file of files){
  assert.equal((html.match(/<h1[ >]/g)||[]).length,1,`${file}: exactly one H1`);
  assert.match(html,/<html lang="ar" dir="rtl">/);
  assert.match(html,/<meta name="description" content="[^\"]+">/);
+ const shareImage=html.match(/<meta property="og:image" content="([^\"]+)">/)?.[1];
+ assert(shareImage,`${file}: missing link-preview image`);
+ const shareUrl=new URL(shareImage);
+ assert.equal(shareUrl.protocol,'https:',`${file}: share image must use HTTPS`);
+ assert(fs.existsSync(path.join(dist,decodeURIComponent(shareUrl.pathname).replace(/^\//,''))),`${file}: share image asset missing`);
+ assert.match(html,/<link rel="canonical" href="https:\/\/[^\"]+">/);
+ assert.match(html,/<meta name="twitter:card" content="summary_large_image">/);
  assert(!/href="#"/.test(html),`${file}: placeholder links`);
  assert(!/src="https?:/.test(html),`${file}: no remote runtime assets`);
  for(const match of html.matchAll(/(?:href|src|data-gallery)="([^\"]+)"/g)){
