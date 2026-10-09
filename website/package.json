@@ -1,0 +1,15 @@
+{
+  "name": "ali-nour-website",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "node serve.mjs",
+    "test": "node checks.mjs"
+  },
+  "description": "Arabic website for Dr. Ali Nour — Fitness, Recovery and Education",
+  "engines": {
+    "node": ">=22"
+  }
+}

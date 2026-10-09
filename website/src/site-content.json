@@ -1,0 +1,127 @@
+{
+  "doctor": {
+    "name_ar": {
+      "value": "علي نور الدين علي مصطفى"
+    },
+    "academic_title": {
+      "value": "أستاذ مساعد"
+    }
+  },
+  "courses": [
+    {
+      "id": "cpt-25",
+      "name": "كورس المدرب الشخصي",
+      "abbreviation": "CPT",
+      "edition": 25,
+      "source_ids": [
+        "P02",
+        "P10"
+      ],
+      "description": "نشرت الصفحة فعاليات ومحاضرات عملية لكورس المدرب الشخصي.",
+      "instructors": [
+        "محمود سيد",
+        "محمد عواض"
+      ]
+    },
+    {
+      "id": "cft-25",
+      "name": "كورس مدرب اللياقة البدنية",
+      "abbreviation": "CFT",
+      "edition": 25,
+      "source_ids": [
+        "P03",
+        "P10"
+      ],
+      "description": "نشرت الصفحة فعاليات ومحاضرات عملية لكورس مدرب اللياقة البدنية.",
+      "instructors": [
+        "أحمد عبد الرحيم",
+        "محمد عواض"
+      ]
+    },
+    {
+      "id": "nutrition-25",
+      "name": "كورس التغذية للرياضيين",
+      "abbreviation": null,
+      "edition": 25,
+      "source_ids": [
+        "P04"
+      ],
+      "description": "نشرت الصفحة فعاليات لكورس التغذية للرياضيين.",
+      "instructors": [
+        "أحمد عثمان"
+      ]
+    },
+    {
+      "id": "cupping-163",
+      "name": "كورس الحجامة الرياضية والعلاجية والتجميلية",
+      "abbreviation": null,
+      "edition": 163,
+      "source_ids": [
+        "P09"
+      ],
+      "description": "نشرت الصفحة صورًا من فعاليات كورس الحجامة.",
+      "instructors": []
+    }
+  ],
+  "research": [
+    {
+      "value": {
+        "title": "تأثير برنامج ترويحي رياضي باستخدام الألعاب الغرضية علي تحسين مستوي بعض المتغيرات البدنية وأداء الركلات لدي ناشئي التايكوندو",
+        "year": 2020,
+        "authors": [
+          "إسلام منصور عبد المنعم",
+          "علي نور الدين علي"
+        ]
+      },
+      "source_ids": [
+        "U4"
+      ]
+    },
+    {
+      "value": {
+        "title": "تأثير برنامج تدريبي بأستخدام تدريبات الأنسانتى \"Insanity\" على بعض المتغيرات البدنية وبعض الركلات المركبة لناشئي رياضه التايكوندو",
+        "year": 2019,
+        "authors": [
+          "علي نور الدين علي مصطفى"
+        ]
+      },
+      "source_ids": [
+        "U5"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "U1",
+      "url": "https://www.aun.edu.eg/physical_education/ar/ali-nour-eldean-ali-mostafa"
+    },
+    {
+      "id": "U4",
+      "url": "https://www.aun.edu.eg/physical_education/tathyr-brnamj-trwyhy-ryady-bastkhdam-alalab-alghrdyt-ly-thsyn-mstwy-bd-almtghyrat-albdnyt-wada"
+    },
+    {
+      "id": "U5",
+      "url": "https://www.aun.edu.eg/physical_education/tathyr-brnamj-tdryby-bastkhdam-tdrybat-alansanty-insanity-ly-bd-almtghyrat-albdnyt-wbd-alrklat"
+    },
+    {
+      "id": "P02",
+      "url": "https://www.facebook.com/reel/28395796530101446/"
+    },
+    {
+      "id": "P03",
+      "url": "https://www.facebook.com/reel/924757143785658/"
+    },
+    {
+      "id": "P04",
+      "url": "https://www.facebook.com/reel/1462774922397541/"
+    },
+    {
+      "id": "P09",
+      "url": "https://www.facebook.com/ali2003nor1/posts/pfbid02YZLW8Z1vcYvd2k8ovHGur9fdXMurUxfgp6iobaUfauEEYogqQGLLNpBxLmgF8Zzdl"
+    },
+    {
+      "id": "P10",
+      "url": "https://www.facebook.com/reel/2159198971656962/"
+    }
+  ]
+}

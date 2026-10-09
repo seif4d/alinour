@@ -1,0 +1,8 @@
+import {cpt} from './cpt-data.mjs';
+export function cptFeature({esc,img,button,link,arrow}, d=cpt) {
+ const code=d.abbreviation;const e=d.editorial;const href='course-'+code.toLowerCase()+'.html';
+ const search=[code,d.englishName,d.name,...e.featureTopics,'التشريح','الجيم',...d.lecturers.map(([name])=>name)].join(' ');
+ return `<article class="course-card course-card-featured course-card-${code.toLowerCase()}" data-category="training" data-search="${esc(search)}">
+ <a class="featured-course-image" href="${href}" aria-label="اكتشف برنامج ${code} ومحاضريه">${img(e.poster,'فريق محاضري '+d.name+' '+code)}<span>SCIENCE IN MOTION <span aria-hidden="true">↗</span></span></a>
+ <div class="featured-course-content"><div class="featured-course-label"><span>برنامج ${d.shortName}</span><span lang="en" dir="ltr">${code} / PROGRAM</span></div><h3><a href="${href}">${e.featureTitle}</a></h3><p>${e.featureDescription}</p><div class="featured-course-facts"><div><strong>${d.duration.totalDays} <small>يومًا</small></strong><span>رحلة التعلّم</span></div><div><strong>${d.duration.theoryDays} <small>أيام</small></strong><span>دراسة نظرية</span></div><div><strong>${String(d.duration.practicalDays).padStart(2,'0')} <small>أيام</small></strong><span>تطبيق عملي</span></div></div><ul class="featured-course-topics" aria-label="محاور مختارة من برنامج ${code}">${e.featureTopics.map(t=>`<li>${t}</li>`).join('')}</ul><div class="featured-course-actions">${button('اكتشف تفاصيل '+code,href,'lime')}${link('استفسر عن الدفعة القادمة',d.contact.whatsapp.url)}</div><p class="featured-course-note">المدة والمحاور وفق الإعلان المقدم. موعد الدفعة القادمة وتفاصيل التسجيل تُؤكد مع الإدارة.</p></div></article>`;
+}

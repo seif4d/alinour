@@ -1,0 +1,23 @@
+# Keep only the deployable project and its build sources in this repository.
+/*
+!/.gitignore
+!/.gitattributes
+!/README.md
+!/.github/
+!/website/
+/website/*
+!/website/src/
+!/website/assets/
+!/website/build.mjs
+!/website/checks.mjs
+!/website/serve.mjs
+!/website/package.json
+!/website/README.md
+
+# Local configuration and tooling output, wherever created.
+**/node_modules/
+**/.env
+**/.env.*
+**/*.log
+**/.DS_Store
+**/Thumbs.db

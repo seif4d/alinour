@@ -1,0 +1,105 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import {fileURLToPath} from 'node:url';
+const root=path.dirname(fileURLToPath(import.meta.url));
+const dist=path.join(root,'dist');
+const files=fs.readdirSync(dist).filter(f=>f.endsWith('.html'));
+let localReferences=0;
+for(const file of files){
+ const html=fs.readFileSync(path.join(dist,file),'utf8');
+ assert.equal((html.match(/<h1[ >]/g)||[]).length,1,`${file}: exactly one H1`);
+ assert.match(html,/<html lang="ar" dir="rtl">/);
+ assert.match(html,/<meta name="description" content="[^\"]+">/);
+ assert(!/href="#"/.test(html),`${file}: placeholder links`);
+ assert(!/src="https?:/.test(html),`${file}: no remote runtime assets`);
+ for(const match of html.matchAll(/(?:href|src|data-gallery)="([^\"]+)"/g)){
+   const url=match[1];if(/^(?:https?:|mailto:|tel:|#)/.test(url))continue;
+   const relative=decodeURIComponent(url.split(/[?#]/)[0]);
+   assert(fs.existsSync(path.resolve(dist,relative)),`${file}: missing ${url}`);localReferences++;
+ }
+ for(const match of html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/g))JSON.parse(match[1]);
+ for(const match of html.matchAll(/href="#([^\"]+)"/g))assert(html.includes(`id="${match[1]}"`),`${file}: missing section ${match[1]}`);
+}
+const publicData=JSON.parse(fs.readFileSync(path.join(dist,'public-content.json'),'utf8'));
+assert(publicData.courses.every(c=>c.availability==='archive'));
+assert(!JSON.stringify(publicData).includes('owner_questions'));
+assert.equal(files.length,17);
+const cpt=JSON.parse(fs.readFileSync(path.join(dist,'cpt-program.json'),'utf8'));
+assert.equal(cpt.duration.totalDays,cpt.duration.theoryDays+cpt.duration.practicalDays);
+assert.equal(cpt.source.currentIntakeConfirmed,false);
+assert.equal(cpt.prices.status,'announced_unconfirmed_current');
+assert.equal(cpt.contact.whatsapp.url,'https://wa.me/'+cpt.contact.whatsapp.e164.slice(1));
+for(const p of cpt.contact.phones)assert.equal(p.e164,'+20'+p.original.slice(1));
+const cft=JSON.parse(fs.readFileSync(path.join(dist,'cft-program.json'),'utf8'));
+assert.equal(cft.duration.totalDays,13);
+assert.equal(cft.duration.theoryDays+cft.duration.practicalDays,cft.duration.totalDays);
+assert.equal(cft.source.currentIntakeConfirmed,false);
+assert.equal(cft.prices.status,'announced_unconfirmed_current');
+const nutrition=JSON.parse(fs.readFileSync(path.join(dist,'nutrition-program.json'),'utf8'));
+assert.deepEqual(nutrition.duration,{totalDays:4,theoryDays:4,practicalDays:null});
+assert.equal(nutrition.lecturers.length,4);
+assert.equal(nutrition.modules.length,6);
+assert.equal(nutrition.prices.course,800);
+assert.equal(nutrition.prices.ministryOption,500);
+assert.equal(nutrition.prices.bundleCptCft,undefined);
+assert.equal(nutrition.source.currentIntakeConfirmed,false);
+assert.equal(nutrition.contact.phones[0].e164,'+201555999873');
+assert.equal(nutrition.faq.length,11);
+const cupping=JSON.parse(fs.readFileSync(path.join(dist,'cupping-program.json'),'utf8'));
+assert.equal(cupping.duration.totalDays,5);
+assert.equal(cupping.duration.practicalDays,null);
+assert.equal(cupping.duration.theoryDays,null);
+assert.equal(cupping.duration.practicalPercent,90);
+assert.equal(cupping.duration.theoryPercent,10);
+assert.equal(cupping.duration.percentageBasis,'total_teaching_hours');
+assert.equal(cupping.modules.length,3);
+assert.equal(cupping.lecturers.length,0);
+assert.equal(cupping.prices.course,1000);
+assert.equal(cupping.prices.suppliesIncluded,true);
+assert.equal(cupping.prices.twoRecoveryCoursesDiscount.total,200);
+assert.equal(cupping.faq.length,12);
+assert.equal(cupping.source.currentIntakeConfirmed,false);
+const massage=JSON.parse(fs.readFileSync(path.join(dist,'massage-program.json'),'utf8'));
+assert.equal(massage.duration.totalDays,5);
+assert.equal(massage.duration.practicalPercent,90);
+assert.equal(massage.duration.theoryPercent,null);
+assert.equal(massage.duration.practicalDays,null);
+assert.equal(massage.duration.theoryDays,null);
+assert.equal(massage.modules.length,4);
+assert.equal(massage.lecturers.length,0);
+assert.equal(massage.faq.length,13);
+assert.equal(massage.prices.course,900);
+assert.equal(massage.prices.ministryOption,500);
+assert.equal(massage.source.currentIntakeConfirmed,false);
+assert.equal(massage.editorial.archiveHref,null);
+const chiropractic=JSON.parse(fs.readFileSync(path.join(dist,'chiropractic-program.json'),'utf8'));
+assert.equal(chiropractic.duration.totalDays,5);
+assert.equal(chiropractic.duration.practicalPercent,90);
+assert.equal(chiropractic.duration.theoryPercent,10);
+assert.equal(chiropractic.duration.practicalDays,null);
+assert.equal(chiropractic.modules.length,2);
+assert.equal(chiropractic.lecturers.length,0);
+assert.equal(chiropractic.faq.length,13);
+assert.equal(chiropractic.prices.course,800);
+assert.equal(chiropractic.source.currentIntakeConfirmed,false);
+assert.equal(chiropractic.editorial.archiveHref,null);
+for(const file of ['index.html','courses.html']){
+ const html=fs.readFileSync(path.join(dist,file),'utf8');
+ for(const code of ['cpt','cft','nutrition']){
+  assert(html.includes(`assets/${code}-lecturers.jpg`),`${file}: missing new ${code} poster`);
+  assert(!html.includes(`assets/${code}.jpg`),`${file}: outdated ${code} cover`);
+ }
+ if(file==='courses.html'){
+ assert(html.includes('assets/cupping-program.jpg'));
+ assert(html.includes('course-cupping.html'));
+ assert(!html.includes('assets/cupping.jpg'));
+ assert(html.includes('assets/massage-program.jpg'));
+ assert(html.includes('course-massage.html'));
+ assert(html.includes('assets/chiropractic-program.jpg'));
+ assert(html.includes('course-chiropractic.html'));
+ }else{assert.equal((html.match(/class="course-card course-card-tile/g)||[]).length,3,'Homepage must contain only three course previews');}
+}
+const report={result:'passed',pages:files.length,localReferences,checks:['local links and media','one H1 per page','Arabic RTL metadata','valid JSON-LD','no remote runtime assets','no placeholder links','no private content leakage','archived course availability']};
+fs.writeFileSync(path.join(root,'validation.json'),JSON.stringify(report,null,2));
+console.log(JSON.stringify(report,null,2));
